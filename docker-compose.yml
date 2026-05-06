@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:15
+    container_name: abstract-art-db
+    environment:
+      POSTGRES_DB: ABSTRACT_ART
+      POSTGRES_USER: userRoy
+      POSTGRES_PASSWORD: password2026
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

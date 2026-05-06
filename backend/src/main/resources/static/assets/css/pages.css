@@ -1,0 +1,255 @@
+/* ===================================
+   PAGES.CSS - Styles spécifiques aux pages
+   =================================== */
+
+/* ===== PAGE D'ACCUEIL ===== */
+
+/* Body styling pour la page d'accueil */
+.page-home {
+    background-color: var(--color-secondary-bg);
+}
+
+/* Hero Section */
+.hero {
+    max-width: var(--max-width-content);
+    width: 100%;
+    margin-bottom: var(--spacing-4xl);
+}
+
+.hero__container {
+    padding: var(--spacing-lg) 0;
+}
+
+.hero__background {
+    display: flex;
+    min-height: 480px;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-4xl);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), 
+                      url("../images/background.jpg");
+    border-radius: var(--border-radius-sm);
+}
+
+.hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    text-align: left;
+}
+
+.hero__title {
+    color: var(--color-white);
+    font-size: var(--font-size-5xl);
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.033em;
+    margin: 0;
+}
+
+.hero__subtitle {
+    color: var(--color-white);
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Galerie d'accueil */
+.home-gallery {
+    padding: var(--spacing-lg);
+    max-width: var(--max-width-content);
+    width: 100%;
+    margin: 0 auto;
+}
+
+.home-gallery__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.home-gallery__image {
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    aspect-ratio: 1;
+    background-size: cover;
+    border-radius: var(--border-radius-sm);
+    transition: transform var(--transition-fast);
+}
+
+.home-gallery__image:hover {
+    transform: scale(1.02);
+}
+
+/* Images spécifiques de la galerie d'accueil */
+.home-gallery__image--1 {
+    background-image: url("../images/gallery/img1.png");
+}
+
+.home-gallery__image--2 {
+    background-image: url("../images/gallery/img2.png");
+}
+
+.home-gallery__image--3 {
+    background-image: url("../images/gallery/img3.png");
+}
+
+/* ===== PAGE GALERIE ===== */
+
+/* Body styling pour la page galerie */
+.page-gallery {
+    background-color: var(--color-primary-bg);
+}
+
+/* En-tête de la page galerie */
+.page-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.page-header__title {
+    color: var(--color-text-dark);
+    font-size: var(--font-size-5xl);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0;
+    min-width: 288px;
+}
+
+.page-header__subtitle {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    line-height: 1.4;
+    margin: 0;
+    max-width: 1000px;
+}
+
+/* Grille de la galerie */
+.gallery {
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-4xl);
+}
+
+/* Artwork cards spécifiques */
+.artwork-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+}
+
+.artwork-card__info {
+    padding: 0 var(--spacing-lg) var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+/* Images des œuvres d'art */
+.artwork-image--1 {
+    background-image: url("../images/artworks/Oeuvre\ 1.png");
+}
+
+.artwork-image--2 {
+    background-image: url("../images/artworks/Oeuvre\ 2.png");
+}
+
+.artwork-image--3 {
+    background-image: url("../images/artworks/Oeuvre\ 3.png");
+}
+
+.artwork-image--4 {
+    background-image: url("../images/artworks/Oeuvre\ 4.png");
+}
+
+.artwork-image--5 {
+    background-image: url("../images/artworks/Oeuvre\ 5.png");
+}
+
+.artwork-image--6 {
+    background-image: url("../images/artworks/Oeuvre\ 6.png");
+}
+
+/* Section d'information de la galerie */
+.gallery-info {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-3xl);
+    margin: var(--spacing-lg);
+    border: var(--border-width) solid var(--color-border-light);
+}
+
+.gallery-info__title {
+    color: var(--color-text-dark);
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: var(--spacing-xl);
+}
+
+.gallery-info__text {
+    color: var(--color-text-dark);
+    font-size: var(--font-size-md);
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-lg);
+}
+
+.gallery-info__text:last-child {
+    margin-bottom: 0;
+}
+
+.gallery-info__link {
+    color: var(--color-accent-orange);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+.gallery-info__link:hover {
+    text-decoration: underline;
+    color: var(--color-accent-orange-hover);
+}
+
+/* ===== STYLES COMMUNS AUX PAGES ===== */
+
+/* Section À propos */
+.about-section {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-3xl);
+    margin: var(--spacing-lg);
+    border: var(--border-width) solid var(--color-border-light);
+}
+
+/* Section des commandes personnalisées */
+.custom-orders-section {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-3xl);
+    margin: var(--spacing-lg);
+    border: var(--border-width) solid var(--color-border-light);
+}
+
+/* Section de contact */
+.contact-section {
+    background-color: rgb(250, 234, 234);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-3xl);
+    margin: var(--spacing-lg);
+}
+
