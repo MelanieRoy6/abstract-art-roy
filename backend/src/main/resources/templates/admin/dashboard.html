@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Gestion de la Galerie</title>
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    <style>
+        .admin-container { padding: 40px; max-width: 1200px; margin: 0 auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .artwork-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .artwork-table th, .artwork-table td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        .artwork-table th { background: #f8f9fa; font-weight: 600; }
+        .artwork-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; }
+        .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; }
+        .status-featured { background: #fff3cd; color: #856404; }
+        .status-sold { background: #f8d7da; color: #721c24; }
+        .btn-group { display: flex; gap: 10px; }
+        .alert { padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+        .alert-success { background: #d4edda; color: #155724; }
+        .alert-error { background: #f8d7da; color: #721c24; }
+        .toggle-btn { cursor: pointer; border: none; background: none; text-decoration: underline; color: var(--color-accent-orange); }
+    </style>
+</head>
+<body>
+    <div class="layout-root">
+        <div class="layout-container">
+            <!-- Header (Admin version) -->
+            <header class="header" role="banner">
+                <div class="header__content">
+                    <div class="logo">
+                        <img src="/assets/images/logo/logo-AbstractArt.png" alt="Logo" class="logo__icon">
+                        <h1 class="logo__title">Abstract Art - Admin</h1>
+                    </div>
+                    <nav class="nav">
+                        <ul class="nav__links">
+                            <li><a href="/admin" class="nav__link nav__link--active">Gestion Galerie</a></li>
+                            <li><a href="/" class="nav__link">Retour au site</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="content">
+                <div class="admin-container">
+                    <header class="admin-header">
+                        <h2>Toutes les œuvres</h2>
+                        <a href="/admin/artwork/new" class="btn btn--primary">Ajouter une Œuvre</a>
+                    </header>
+
+                    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+                    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+                    <div th:if="${#lists.isEmpty(artworks)}" style="text-align: center; padding: 50px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        <p style="font-size: 1.2rem; color: #666; margin-bottom: 20px;">Votre galerie est vide pour le moment.</p>
+                        <a href="/admin/artwork/new" class="btn btn--primary">Ajouter votre première œuvre</a>
+                    </div>
+
+                    <table th:if="${!#lists.isEmpty(artworks)}" class="artwork-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Titre</th>
+                                <th>Prix</th>
+                                <th>En avant</th>
+                                <th>Vendu</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="artwork : ${artworks}">
+                                <td>
+                                    <img th:src="${artwork.imageUrl}" class="artwork-thumb" alt="Miniature">
+                                </td>
+                                <td th:text="${artwork.title}"></td>
+                                <td th:text="${artwork.price != null ? artwork.price + ' €' : '-'}"></td>
+                                <td>
+                                    <button class="toggle-btn" th:onclick="'toggleFeatured(' + ${artwork.id} + ')'" 
+                                            th:text="${artwork.featured ? 'OUI' : 'NON'}"></button>
+                                </td>
+                                <td>
+                                    <button class="toggle-btn" th:onclick="'toggleSold(' + ${artwork.id} + ')'" 
+                                            th:text="${artwork.sold ? 'OUI' : 'NON'}"></button>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a th:href="@{/admin/artwork/edit/{id}(id=${artwork.id})}" class="btn btn--secondary btn--small">Modifier</a>
+                                        <a th:href="@{/admin/artwork/delete/{id}(id=${artwork.id})}" 
+                                           class="btn btn--danger btn--small" 
+                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette œuvre ?')">Supprimer</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function toggleFeatured(id) {
+            fetch('/admin/artwork/toggle-featured/' + id, { method: 'POST' })
+                .then(() => location.reload());
+        }
+        function toggleSold(id) {
+            fetch('/admin/artwork/toggle-sold/' + id, { method: 'POST' })
+                .then(() => location.reload());
+        }
+    </script>
+</body>
+</html>

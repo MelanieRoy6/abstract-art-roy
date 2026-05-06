@@ -34,7 +34,7 @@ public class Artwork {
 
     private String category; // e.g., "CUSTOM", "ABSTRACT"
 
-    private boolean isFeatured = false;
+    private boolean featured = false;
 
-    private boolean isSold = false;
+    private boolean sold = false;
 }
