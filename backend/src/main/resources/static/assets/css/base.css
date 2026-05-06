@@ -1,0 +1,479 @@
+/* ===================================
+   BASE.CSS - ROY ABSTRACT ART REBRAND
+   Variables et styles de base
+   =================================== */
+
+/* Import des nouvelles polices */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bebas+Neue&display=swap');
+
+/* Variables CSS globales - ROY ABSTRACT ART THEME */
+:root {
+    /* ===== COULEURS PRINCIPALES ===== */
+    --roy-red: #FF4444;
+    --roy-red-hover: #E03333;
+    --roy-red-light: #FF666A;
+    --roy-black: #0A0A0A;
+    --roy-white: #FFFFFF;
+    
+    /* ===== COULEURS SECONDAIRES ===== */
+    --roy-charcoal: #1A1A1A;
+    --roy-gray-medium: #666666;
+    --roy-gray-light: #F5F5F5;
+    --roy-gray-border: #E5E5E5;
+    
+    /* ===== COULEURS D'ÉTAT ===== */
+    --color-available: #22C55E;
+    --color-sold: #EF4444;
+    --color-warning: #F59E0B;
+    
+    /* ===== TYPOGRAPHIE ===== */
+    --font-family-main: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+    --font-family-impact: "Bebas Neue", "Anton", "Arial Black", sans-serif;
+    
+    /* Tailles de police */
+    --font-size-xs: 11px;
+    --font-size-sm: 12px;
+    --font-size-base: 16px;
+    --font-size-md: 18px;
+    --font-size-lg: 20px;
+    --font-size-xl: 24px;
+    --font-size-2xl: 28px;
+    --font-size-3xl: 32px;
+    --font-size-4xl: 40px;
+    --font-size-5xl: 48px;
+    --font-size-6xl: 64px;
+    
+    /* ===== ESPACEMENTS ===== */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 20px;
+    --spacing-2xl: 24px;
+    --spacing-3xl: 32px;
+    --spacing-4xl: 40px;
+    --spacing-5xl: 48px;
+    
+    /* ===== BORDURES ET RAYONS ===== */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-width: 2px;
+    --border-width-thick: 3px;
+    
+    /* ===== OMBRES - STYLE STREET ART ===== */
+    --shadow-sm: 0 2px 8px rgba(255, 68, 68, 0.1);
+    --shadow-md: 0 8px 24px rgba(255, 68, 68, 0.15);
+    --shadow-lg: 0 16px 48px rgba(255, 68, 68, 0.2);
+    --shadow-black: 0 4px 16px rgba(10, 10, 10, 0.3);
+    
+    /* ===== TRANSITIONS - PLUS SNAPPY ===== */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* ===== DIMENSIONS ===== */
+    --max-width-content: 1200px;
+    --max-width-form: 600px;
+    --header-height: 80px;
+    --button-height: 48px;
+    --button-height-lg: 56px;
+    --input-height: 56px;
+    
+    /* ===== DÉGRADÉS ===== */
+    --gradient-red-black: linear-gradient(135deg, var(--roy-red) 0%, var(--roy-black) 100%);
+    --gradient-black-red: linear-gradient(135deg, var(--roy-black) 0%, var(--roy-red) 100%);
+}
+
+/* ===== RESET CSS MODERNE ===== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== STYLES DE BASE ===== */
+html {
+    font-size: 16px;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family-main);
+    color: var(--roy-black);
+    line-height: 1.6;
+    background-color: var(--roy-white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* ===== TYPOGRAPHIE IMPACTANTE ===== */
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-family: var(--font-family-impact);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--roy-black);
+}
+
+h1 {
+    font-size: var(--font-size-6xl);
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: var(--font-size-5xl);
+}
+
+h3 {
+    font-size: var(--font-size-4xl);
+}
+
+/* Titres avec effet "brush stroke" */
+.title-accent {
+    position: relative;
+    display: inline-block;
+}
+
+.title-accent::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: -8px;
+    right: -8px;
+    height: 8px;
+    background: var(--roy-red);
+    transform: skew(-2deg);
+    z-index: -1;
+    opacity: 0.8;
+}
+
+/* Paragraphes */
+p {
+    margin: 0;
+    line-height: 1.7;
+    font-size: var(--font-size-base);
+}
+
+/* Liens avec style street art */
+a {
+    color: inherit;
+    text-decoration: none;
+    position: relative;
+    transition: var(--transition-normal);
+}
+
+a:hover {
+    color: var(--roy-red);
+}
+
+/* Effet de soulignement "spray paint" */
+.link-spray {
+    position: relative;
+}
+
+.link-spray::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--roy-red);
+    transition: var(--transition-normal);
+    transform: skew(-12deg);
+}
+
+.link-spray:hover::after {
+    width: 100%;
+}
+
+/* ===== BOUTONS REDESIGNÉS ===== */
+button {
+    font-family: inherit;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-family-impact);
+    font-size: var(--font-size-base);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: var(--border-width) solid transparent;
+    transition: var(--transition-normal);
+    cursor: pointer;
+    text-decoration: none;
+    min-width: 120px;
+    height: var(--button-height);
+    padding: 0 var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Bouton primaire - Style "paint splash" */
+.btn--primary {
+    background: var(--roy-red);
+    color: var(--roy-white);
+    border-color: var(--roy-red);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn--primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--roy-black);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: var(--transition-normal);
+    z-index: -1;
+}
+
+.btn--primary:hover {
+    transform: translateY(-2px) rotate(-1deg);
+    box-shadow: var(--shadow-md);
+}
+
+.btn--primary:hover::before {
+    width: 120%;
+    height: 120%;
+}
+
+/* Bouton secondaire - Style "graffiti outline" */
+.btn--secondary {
+    background: transparent;
+    color: var(--roy-red);
+    border-color: var(--roy-red);
+    border-width: var(--border-width-thick);
+}
+
+.btn--secondary:hover {
+    background: var(--roy-red);
+    color: var(--roy-white);
+    transform: translateY(-2px) rotate(1deg);
+    box-shadow: var(--shadow-black);
+}
+
+/* ===== FORMULAIRES STREET ART ===== */
+input,
+textarea {
+    font-family: inherit;
+    border: none;
+    outline: none;
+    transition: var(--transition-normal);
+}
+
+.form-control {
+    width: 100%;
+    border-radius: var(--border-radius-sm);
+    color: var(--roy-black);
+    border: var(--border-width) solid var(--roy-gray-border);
+    background-color: var(--roy-white);
+    padding: var(--spacing-lg);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    line-height: 1.4;
+    font-family: var(--font-family-main);
+    transition: var(--transition-normal);
+    position: relative;
+}
+
+.form-control:focus {
+    border-color: var(--roy-red);
+    box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
+    transform: translateY(-1px);
+}
+
+/* ===== CARTES AVEC STYLE STREET ART ===== */
+.card-roy {
+    background: var(--roy-white);
+    border: var(--border-width) solid var(--roy-black);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    transition: var(--transition-normal);
+    position: relative;
+}
+
+.card-roy::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-red-black);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: var(--transition-normal);
+}
+
+.card-roy:hover {
+    transform: translateY(-8px) rotate(-1deg);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-roy:hover::before {
+    transform: scaleX(1);
+}
+
+/* ===== CLASSES UTILITAIRES ROY ===== */
+.text-roy-red { color: var(--roy-red); }
+.text-roy-black { color: var(--roy-black); }
+.text-roy-white { color: var(--roy-white); }
+.text-roy-gray { color: var(--roy-gray-medium); }
+
+.bg-roy-red { background-color: var(--roy-red); }
+.bg-roy-black { background-color: var(--roy-black); }
+.bg-roy-white { background-color: var(--roy-white); }
+.bg-roy-gray-light { background-color: var(--roy-gray-light); }
+
+.border-roy-red { border-color: var(--roy-red); }
+.border-roy-black { border-color: var(--roy-black); }
+
+/* ===== LAYOUT DE BASE ===== */
+.container-roy {
+    width: 100%;
+    max-width: var(--max-width-content);
+    margin: 0 auto;
+    padding: 0 var(--spacing-xl);
+}
+
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.flex-center { align-items: center; justify-content: center; }
+.flex-between { justify-content: space-between; }
+.flex-wrap { flex-wrap: wrap; }
+
+/* Gaps avec plus d'options */
+.gap-xs { gap: var(--spacing-xs); }
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+.gap-xl { gap: var(--spacing-xl); }
+.gap-2xl { gap: var(--spacing-2xl); }
+.gap-3xl { gap: var(--spacing-3xl); }
+
+/* ===== ANIMATIONS STREET ART ===== */
+@keyframes paintSplash {
+    0% {
+        transform: scale(0.8) rotate(-5deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05) rotate(2deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes brushStroke {
+    0% {
+        width: 0;
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        width: 100%;
+        opacity: 0.8;
+    }
+}
+
+@keyframes sprayFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Classes d'animation */
+.animate-paint-splash {
+    animation: paintSplash 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-brush-stroke {
+    animation: brushStroke 1s ease-out;
+}
+
+.animate-spray-fade {
+    animation: sprayFade 0.8s ease-out;
+}
+
+/* Délais d'animation */
+.animate-delay-1 { animation-delay: 0.1s; }
+.animate-delay-2 { animation-delay: 0.2s; }
+.animate-delay-3 { animation-delay: 0.3s; }
+.animate-delay-4 { animation-delay: 0.4s; }
+.animate-delay-5 { animation-delay: 0.5s; }
+
+/* ===== FOCUS STATES - ACCESSIBILITÉ ===== */
+*:focus {
+    outline: 3px solid var(--roy-red);
+    outline-offset: 2px;
+}
+
+/* ===== RESPONSIVE HELPERS ===== */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ===== SÉLECTION DE TEXTE PERSONNALISÉE ===== */
+::selection {
+    background: var(--roy-red);
+    color: var(--roy-white);
+}
+
+::-moz-selection {
+    background: var(--roy-red);
+    color: var(--roy-white);
+}
+
+/* ===== SCROLLBAR PERSONNALISÉE ===== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--roy-gray-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--roy-red);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--roy-red-hover);
+}

@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: AbstractArtRoy
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/ABSTRACT_ART
+    username: userRoy
+    password: password2026
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: mel44620@gmail.com
+    password: wkse cxtd mnwy lkfz
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: false
+    locations: classpath:db/migration
+
+logging:
+  level:
+    org.hibernate.SQL: warn
