@@ -37,4 +37,11 @@ public class Artwork {
     private boolean featured = false;
 
     private boolean sold = false;
+
+    private java.time.LocalDateTime createdAt;
+
+    @jakarta.persistence.PrePersist
+    protected void onCreate() {
+        createdAt = java.time.LocalDateTime.now();
+    }
 }

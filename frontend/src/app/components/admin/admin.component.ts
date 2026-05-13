@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ArtworkService } from '../../services/artwork.service';
 import { ClientService } from '../../services/client.service';
 import { Artwork, Client } from '../../models/models';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -56,12 +57,17 @@ import { Artwork, Client } from '../../models/models';
       </aside>
 
       <main class="admin-main">
+        <!-- Notifications -->
+        <div *ngIf="notification" class="notification-toast" [class.error]="notification.type === 'error'">
+          {{ notification.message }}
+        </div>
+
         <!-- Gestion des Œuvres -->
         <div *ngIf="activeTab === 'artworks'" class="tab-content">
           <header class="content-header">
             <h1>Gestion des Œuvres</h1>
-            <button class="btn-primary" (click)="showForm = !showForm">
-              {{ showForm ? 'Fermer' : 'Nouvelle Œuvre' }}
+            <button class="btn-primary" (click)="toggleForm()">
+              {{ showForm ? 'Fermer' : 'Ajouter une œuvre' }}
             </button>
           </header>
 
@@ -86,14 +92,14 @@ import { Artwork, Client } from '../../models/models';
                 </div>
                 <div class="form-group checkbox-group">
                    <label class="switch">
-                    <input type="checkbox" [(ngModel)]="currentArtwork.isFeatured" name="isFeatured">
+                    <input type="checkbox" [(ngModel)]="currentArtwork.featured" name="featured">
                     <span class="slider round"></span>
                   </label>
                   <span>Mettre en avant</span>
                 </div>
                 <div class="form-group checkbox-group">
                    <label class="switch">
-                    <input type="checkbox" [(ngModel)]="currentArtwork.isSold" name="isSold">
+                    <input type="checkbox" [(ngModel)]="currentArtwork.sold" name="sold">
                     <span class="slider round"></span>
                   </label>
                   <span>Marquer comme Vendu</span>
@@ -107,21 +113,29 @@ import { Artwork, Client } from '../../models/models';
                 <label>Image</label>
                 <div class="upload-area">
                   <input type="file" (change)="onFileSelected($event)" accept="image/*" id="fileInput" class="hidden-input">
-                  <label for="fileInput" class="btn-upload">Choisir une image</label>
+                  <label for="fileInput" class="btn-upload">
+                    {{ isUploading ? 'Chargement...' : 'Choisir une image' }}
+                  </label>
                   <div *ngIf="currentArtwork.imageUrl" class="image-preview">
                     <img [src]="currentArtwork.imageUrl" alt="Preview">
                   </div>
                 </div>
               </div>
               <div class="form-actions">
-                <button type="submit" class="btn-save">Enregistrer</button>
+                <button type="submit" class="btn-save" [disabled]="isLoading || isUploading">
+                  {{ isLoading ? 'Enregistrement...' : 'Enregistrer' }}
+                </button>
                 <button type="button" (click)="resetForm()" class="btn-cancel">Annuler</button>
               </div>
             </form>
           </section>
 
           <section class="list-section">
-            <div class="artwork-table-container">
+            <div *ngIf="isLoadingList" class="loader-container">
+               <div class="loader"></div>
+            </div>
+            
+            <div *ngIf="!isLoadingList" class="artwork-table-container">
               <table class="admin-table">
                 <thead>
                   <tr>
@@ -135,15 +149,15 @@ import { Artwork, Client } from '../../models/models';
                 </thead>
                 <tbody>
                   <tr *ngFor="let artwork of artworks">
-                    <td><img [src]="artwork.imageUrl" class="table-img"></td>
+                    <td><img [src]="artwork.imageUrl" class="table-img" (error)="artwork.imageUrl = 'assets/images/gallery/background.jpg'"></td>
                     <td><strong>{{ artwork.title }}</strong></td>
                     <td><span class="badge">{{ artwork.category }}</span></td>
                     <td>{{ artwork.price }} €</td>
                     <td>
-                      <span class="badge" [style.background]="artwork.isSold ? '#ffe7e6' : '#e6fffa'" [style.color]="artwork.isSold ? '#f5222d' : '#389e0d'">
-                        {{ artwork.isSold ? 'Vendu' : 'Disponible' }}
+                      <span class="badge" [style.background]="artwork.sold ? '#ffe7e6' : '#e6fffa'" [style.color]="artwork.sold ? '#f5222d' : '#389e0d'">
+                        {{ artwork.sold ? 'Vendu' : 'Disponible' }}
                       </span>
-                      <span *ngIf="artwork.isFeatured" class="badge" style="margin-left: 5px; background: #fff7e6; color: #d46b08;">Featured</span>
+                      <span *ngIf="artwork.featured" class="badge" style="margin-left: 5px; background: #fff7e6; color: #d46b08;">Featured</span>
                     </td>
                     <td>
                       <div class="table-actions">
@@ -195,6 +209,7 @@ import { Artwork, Client } from '../../models/models';
       grid-template-columns: 250px 1fr;
       min-height: 100vh;
       background: #f4f7f6;
+      padding-top: 80px; /* Offset for fixed navbar */
     }
 
     /* Login Styles */
@@ -296,6 +311,8 @@ import { Artwork, Client } from '../../models/models';
       justify-content: space-between;
       align-items: center;
       margin-bottom: 2rem;
+      position: relative;
+      z-index: 1001; /* Passé par dessus le header si besoin */
     }
     .tab-content { animation: fadeIn 0.4s ease-out; }
 
@@ -388,6 +405,41 @@ import { Artwork, Client } from '../../models/models';
     .hidden-input { display: none; }
     .btn-upload { display: inline-block; padding: 0.8rem 1.5rem; background: #f0f0f0; border-radius: 8px; cursor: pointer; margin-bottom: 1rem; }
     .image-preview img { max-width: 150px; border-radius: 8px; display: block; margin-top: 1rem; }
+
+    /* Notifications */
+    .notification-toast {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      padding: 1rem 2rem;
+      background: #389e0d;
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 3000;
+      animation: slideIn 0.3s ease-out;
+    }
+    .notification-toast.error { background: #f5222d; }
+
+    /* Loaders */
+    .loader-container { display: flex; justify-content: center; padding: 3rem; }
+    .loader {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #000;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   `]
 })
 export class AdminComponent implements OnInit {
@@ -397,6 +449,12 @@ export class AdminComponent implements OnInit {
   editingArtwork = false;
   activeTab: 'artworks' | 'messages' = 'artworks';
   showForm = false;
+  
+  // UI States
+  isLoading = false;
+  isLoadingList = false;
+  isUploading = false;
+  notification: { message: string, type: 'success' | 'error' } | null = null;
 
   // Login Logic
   isLoggedIn = false;
@@ -448,42 +506,92 @@ export class AdminComponent implements OnInit {
   }
 
   loadArtworks() {
-    this.artworkService.getArtworks().subscribe(data => this.artworks = data);
+    this.isLoadingList = true;
+    this.artworkService.getArtworks()
+      .pipe(finalize(() => this.isLoadingList = false))
+      .subscribe({
+        next: (data) => {
+          this.artworks = (data || []).sort((a, b) => {
+            const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+            const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+            return dateB - dateA;
+          });
+        },
+        error: (err) => {
+          console.error('Error loading artworks:', err);
+          this.showNotification('Erreur lors du chargement des œuvres', 'error');
+        }
+      });
   }
 
   loadClients() {
-    this.clientService.getClients().subscribe(data => {
-      this.clients = data.sort((a, b) => 
-        new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
-      );
+    this.clientService.getClients().subscribe({
+      next: (data) => {
+        this.clients = (data || []).sort((a, b) => {
+          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return dateB - dateA;
+        });
+      },
+      error: (err) => {
+        console.error('Error loading messages:', err);
+      }
     });
   }
 
   emptyArtwork(): Artwork {
-    return { title: '', description: '', price: 0, imageUrl: '', category: 'ABSTRACT', isFeatured: false };
+    return { title: '', description: '', price: 0, imageUrl: '', category: 'ABSTRACT', featured: false, sold: false };
+  }
+
+  toggleForm() {
+    if (this.showForm) {
+      this.resetForm();
+    } else {
+      this.showForm = true;
+    }
   }
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.artworkService.uploadImage(file).subscribe(res => {
-        this.currentArtwork.imageUrl = res.url;
-      });
+      this.isUploading = true;
+      this.artworkService.uploadImage(file)
+        .pipe(finalize(() => this.isUploading = false))
+        .subscribe({
+          next: (res) => {
+            this.currentArtwork.imageUrl = res.url;
+            this.showNotification('Image téléchargée avec succès', 'success');
+          },
+          error: (err) => {
+            this.showNotification('Erreur lors du téléchargement de l\'image', 'error');
+          }
+        });
     }
   }
 
   saveArtwork() {
-    if (this.editingArtwork && this.currentArtwork.id) {
-      this.artworkService.updateArtwork(this.currentArtwork.id, this.currentArtwork).subscribe(() => {
-        this.resetForm();
-        this.loadArtworks();
-      });
-    } else {
-      this.artworkService.createArtwork(this.currentArtwork).subscribe(() => {
-        this.resetForm();
-        this.loadArtworks();
-      });
+    if (!this.currentArtwork.title || this.currentArtwork.price <= 0) {
+      this.showNotification('Veuillez remplir les champs obligatoires', 'error');
+      return;
     }
+
+    this.isLoading = true;
+    const observer = {
+      next: () => {
+        this.showNotification(`Œuvre ${this.editingArtwork ? 'modifiée' : 'ajoutée'} avec succès`, 'success');
+        this.resetForm();
+        this.loadArtworks();
+      },
+      error: (err: any) => {
+        this.showNotification('Erreur lors de l\'enregistrement', 'error');
+      }
+    };
+
+    const request = this.editingArtwork && this.currentArtwork.id
+      ? this.artworkService.updateArtwork(this.currentArtwork.id, this.currentArtwork)
+      : this.artworkService.createArtwork(this.currentArtwork);
+
+    request.pipe(finalize(() => this.isLoading = false)).subscribe(observer);
   }
 
   editArtwork(artwork: Artwork) {
@@ -495,7 +603,13 @@ export class AdminComponent implements OnInit {
 
   deleteArtwork(id: number) {
     if (confirm('Voulez-vous vraiment supprimer cette œuvre ?')) {
-      this.artworkService.deleteArtwork(id).subscribe(() => this.loadArtworks());
+      this.artworkService.deleteArtwork(id).subscribe({
+        next: () => {
+          this.showNotification('Œuvre supprimée', 'success');
+          this.loadArtworks();
+        },
+        error: () => this.showNotification('Erreur lors de la suppression', 'error')
+      });
     }
   }
 
@@ -503,5 +617,10 @@ export class AdminComponent implements OnInit {
     this.currentArtwork = this.emptyArtwork();
     this.editingArtwork = false;
     this.showForm = false;
+  }
+
+  showNotification(message: string, type: 'success' | 'error') {
+    this.notification = { message, type };
+    setTimeout(() => this.notification = null, 3000);
   }
 }

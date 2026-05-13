@@ -130,10 +130,10 @@ export class GalleryComponent implements OnInit {
 
   ngOnInit(): void {
     this.artworkService.getArtworks().subscribe(data => {
-      this.featuredCustom = data.filter(a => a.category === 'CUSTOM' && a.isFeatured).slice(0, 3);
-      this.featuredAbstract = data.filter(a => a.category === 'ABSTRACT' && a.isFeatured).slice(0, 3);
-      this.availableArtworks = data.filter(a => !a.isSold);
-      this.soldArtworks = data.filter(a => a.isSold);
+      this.featuredCustom = data.filter(a => a.category === 'CUSTOM' && a.featured).slice(0, 3);
+      this.featuredAbstract = data.filter(a => a.category === 'ABSTRACT' && a.featured).slice(0, 3);
+      this.availableArtworks = data.filter(a => !a.sold);
+      this.soldArtworks = data.filter(a => a.sold);
     });
   }
 }
