@@ -105,65 +105,25 @@
                     <section class="gallery" aria-labelledby="gallery-title">
                         <h2 id="gallery-title" class="sr-only">Collection d'œuvres d'art</h2>
                         <div class="grid grid--gallery">
-                            <!-- Œuvre 1 -->
-                            <article class="card artwork-card animate-fade-in-up animate-delay-1">
-                                <div class="card__image artwork-image--1" role="img" aria-label="Harmonie Abstraite I - Tableau abstrait coloré par Roy Eric"></div>
+                            <!-- Œuvres dynamiques -->
+                            <article th:each="artwork, iterStat : ${artworks}" class="card artwork-card animate-fade-in-up" th:classappend="'animate-delay-' + (${iterStat.index % 6} + 1)">
+                                <div class="card__image" 
+                                     th:style="'background-image: url(' + ${artwork.imageUrl} + ')'" 
+                                     role="img" th:aria-label="${artwork.title} + ' - ' + ${artwork.description}"></div>
                                 <div class="card__content artwork-card__info">
-                                    <h3 class="card__title">Harmonie Abstraite I</h3>
-                                    <p class="card__status card__status--available">Disponible</p>
-                                    <p class="card__description">Peinture abstraite aux couleurs vives, technique mixte sur toile</p>
+                                    <h3 class="card__title" th:text="${artwork.title}">Titre de l'œuvre</h3>
+                                    <p class="card__status" 
+                                       th:classappend="${artwork.isSold} ? 'card__status--sold' : 'card__status--available'"
+                                       th:text="${artwork.isSold} ? 'Vendu' : 'Disponible'">Statut</p>
+                                    <p class="card__description" th:text="${artwork.description}">Description de l'œuvre</p>
+                                    <p class="card__price" th:if="${artwork.price != null}" th:text="${artwork.price} + ' €'"></p>
                                 </div>
                             </article>
                             
-                            <!-- Œuvre 2 -->
-                            <article class="card artwork-card animate-fade-in-up animate-delay-2">
-                                <div class="card__image artwork-image--2" role="img" aria-label="Mouvement Chromatique II - Peinture abstraite moderne par Roy Eric"></div>
-                                <div class="card__content artwork-card__info">
-                                    <h3 class="card__title">Mouvement Chromatique II</h3>
-                                    <p class="card__status card__status--sold">Vendu</p>
-                                    <p class="card__description">Art abstrait expressionniste, jeu de textures et couleurs</p>
-                                </div>
-                            </article>
-                            
-                            <!-- Œuvre 3 -->
-                            <article class="card artwork-card animate-fade-in-up animate-delay-3">
-                                <div class="card__image artwork-image--3" role="img" aria-label="Fusion Géométrique III - Art contemporain abstrait par Roy Eric"></div>
-                                <div class="card__content artwork-card__info">
-                                    <h3 class="card__title">Fusion Géométrique III</h3>
-                                    <p class="card__status card__status--available">Disponible</p>
-                                    <p class="card__description">Composition abstraite géométrique, acrylique sur toile</p>
-                                </div>
-                            </article>
-                            
-                            <!-- Œuvre 4 -->
-                            <article class="card artwork-card animate-fade-in-up animate-delay-4">
-                                <div class="card__image artwork-image--4" role="img" aria-label="Énergie Fluide IV - Peinture moderne abstraite par Roy Eric"></div>
-                                <div class="card__content artwork-card__info">
-                                    <h3 class="card__title">Énergie Fluide IV</h3>
-                                    <p class="card__status card__status--available">Disponible</p>
-                                    <p class="card__description">Art abstrait dynamique, exploration des formes organiques</p>
-                                </div>
-                            </article>
-                            
-                            <!-- Œuvre 5 -->
-                            <article class="card artwork-card animate-fade-in-up animate-delay-5">
-                                <div class="card__image artwork-image--5" role="img" aria-label="Résonance Colorée V - Tableau abstrait contemporain par Roy Eric"></div>
-                                <div class="card__content artwork-card__info">
-                                    <h3 class="card__title">Résonance Colorée V</h3>
-                                    <p class="card__status card__status--sold">Vendu</p>
-                                    <p class="card__description">Peinture abstraite lyrique, technique de superposition</p>
-                                </div>
-                            </article>
-                            
-                            <!-- Œuvre 6 -->
-                            <article class="card artwork-card animate-fade-in-up animate-delay-6">
-                                <div class="card__image artwork-image--6" role="img" aria-label="Symphonie Visuelle VI - Art moderne abstrait par Roy Eric"></div>
-                                <div class="card__content artwork-card__info">
-                                    <h3 class="card__title">Symphonie Visuelle VI</h3>
-                                    <p class="card__status card__status--available">Disponible</p>
-                                    <p class="card__description">Art abstrait musical, harmonie des tons chauds et froids</p>
-                                </div>
-                            </article>
+                            <!-- Message si aucune œuvre -->
+                            <div th:if="${#lists.isEmpty(artworks)}" class="no-artworks">
+                                <p>Aucune œuvre n'est disponible pour le moment.</p>
+                            </div>
                         </div>
                     </section>
                     

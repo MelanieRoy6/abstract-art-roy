@@ -37,6 +37,7 @@ public class ArtworkController {
                     artwork.setImageUrl(artworkDetails.getImageUrl());
                     artwork.setCategory(artworkDetails.getCategory());
                     artwork.setFeatured(artworkDetails.isFeatured());
+                    artwork.setSold(artworkDetails.isSold());
                     return ResponseEntity.ok(artworkRepository.save(artwork));
                 })
                 .orElse(ResponseEntity.notFound().build());

@@ -164,14 +164,15 @@
                     
                     <!-- Galerie d'aperçu -->
                     <div class="grid grid--3-col home-gallery">
-                        <div class="home-gallery__item">
-                            <div class="home-gallery__image home-gallery__image--1" role="img" aria-label="Tableau abstrait coloré par Roy Eric"></div>
+                        <div th:each="artwork : ${featuredArtworks}" class="home-gallery__item">
+                            <div class="home-gallery__image" 
+                                 th:style="'background-image: url(' + ${artwork.imageUrl} + ')'" 
+                                 role="img" th:aria-label="${artwork.title}"></div>
                         </div>
-                        <div class="home-gallery__item">
-                            <div class="home-gallery__image home-gallery__image--2" role="img" aria-label="Peinture abstraite moderne par l'artiste Roy Eric"></div>
-                        </div>
-                        <div class="home-gallery__item">
-                            <div class="home-gallery__image home-gallery__image--3" role="img" aria-label="Art abstrait contemporain - œuvre de Roy Eric"></div>
+                        
+                        <!-- Fallback if no featured artworks -->
+                        <div th:if="${#lists.isEmpty(featuredArtworks)}" class="home-gallery__item" th:each="i : ${#numbers.sequence(1, 3)}">
+                             <div class="home-gallery__image" th:classappend="'home-gallery__image--' + ${i}"></div>
                         </div>
                     </div>
                     
@@ -229,6 +230,7 @@
     <footer>
         <p>instagram</p>
         <p>facebook</p>
+        <p><a href="/admin" style="color: inherit; text-decoration: none; font-size: 0.8rem; opacity: 0.5;">Admin</a></p>
     </footer>
 
     <!-- JavaScript -->

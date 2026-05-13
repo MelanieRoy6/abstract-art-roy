@@ -14,6 +14,7 @@ export interface Artwork {
     price: number;
     imageUrl?: string;
     category?: string;
-    isFeatured?: boolean;
-    isSold?: boolean;
+    featured?: boolean;
+    sold?: boolean;
+    createdAt?: string;
 }

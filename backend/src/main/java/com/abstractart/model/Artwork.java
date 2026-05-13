@@ -34,7 +34,14 @@ public class Artwork {
 
     private String category; // e.g., "CUSTOM", "ABSTRACT"
 
-    private boolean isFeatured = false;
+    private boolean featured = false;
 
-    private boolean isSold = false;
+    private boolean sold = false;
+
+    private java.time.LocalDateTime createdAt;
+
+    @jakarta.persistence.PrePersist
+    protected void onCreate() {
+        createdAt = java.time.LocalDateTime.now();
+    }
 }

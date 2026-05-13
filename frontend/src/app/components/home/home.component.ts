@@ -130,7 +130,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.artworkService.getArtworks().subscribe(artworks => {
-      this.featuredArtworks = artworks.filter(a => a.isFeatured);
+      this.featuredArtworks = artworks.filter(a => a.featured);
       if (this.featuredArtworks.length === 0 && artworks.length > 0) {
         this.featuredArtworks = artworks.slice(0, 3); // Fallback to first 3
       }
